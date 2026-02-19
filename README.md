@@ -1,81 +1,116 @@
-# Intercom
+# INTERCOM – Transaction Visualizer + AI Wallet Agent
 
-This repository is a reference implementation of the **Intercom** stack on Trac Network for an **internet of agents**.
+A lightweight on-chain transaction visualizer with an integrated AI Agent for wallet behavior analysis.
 
-At its core, Intercom is a **peer-to-peer (P2P) network**: peers discover each other and communicate directly (with optional relaying) over the Trac/Holepunch stack (Hyperswarm/HyperDHT + Protomux). There is no central server required for sidechannel messaging.
+Built for the Trac Network bounty.
 
-Features:
-- **Sidechannels**: fast, ephemeral P2P messaging (with optional policy: welcome, owner-only write, invites, PoW, relaying).
-- **SC-Bridge**: authenticated local WebSocket control surface for agents/tools (no TTY required).
-- **Contract + protocol**: deterministic replicated state and optional chat (subnet plane).
-- **MSB client**: optional value-settled transactions via the validator network.
+---
 
-Additional references: https://www.moltbook.com/post/9ddd5a47-4e8d-4f01-9908-774669a11c21 and moltbook m/intercom
+## 📍 TRAC ADDRESS
 
-For full, agent‑oriented instructions and operational guidance, **start with `SKILL.md`**.  
-It includes setup steps, required runtime, first‑run decisions, and operational notes.
-
-## Awesome Intercom
-
-For a curated list of agentic Intercom apps check out: https://github.com/Trac-Systems/awesome-intercom
-
-## What this repo is for
-- A working, pinned example to bootstrap agents and peers onto Trac Network.
-- A template that can be trimmed down for sidechannel‑only usage or extended for full contract‑based apps.
-
-## How to use
-Use the **Pear runtime only** (never native node).  
-Follow the steps in `SKILL.md` to install dependencies, run the admin peer, and join peers correctly.
-
-## Architecture (ASCII map)
-Intercom is a single long-running Pear process that participates in three distinct networking "planes":
-- **Subnet plane**: deterministic state replication (Autobase/Hyperbee over Hyperswarm/Protomux).
-- **Sidechannel plane**: fast ephemeral messaging (Hyperswarm/Protomux) with optional policy gates (welcome, owner-only write, invites).
-- **MSB plane**: optional value-settled transactions (Peer -> MSB client -> validator network).
-
-```text
-                          Pear runtime (mandatory)
-                pear run . --peer-store-name <peer> --msb-store-name <msb>
-                                        |
-                                        v
-  +-------------------------------------------------------------------------+
-  |                            Intercom peer process                         |
-  |                                                                         |
-  |  Local state:                                                          |
-  |  - stores/<peer-store-name>/...   (peer identity, subnet state, etc)    |
-  |  - stores/<msb-store-name>/...    (MSB wallet/client state)             |
-  |                                                                         |
-  |  Networking planes:                                                     |
-  |                                                                         |
-  |  [1] Subnet plane (replication)                                         |
-  |      --subnet-channel <name>                                            |
-  |      --subnet-bootstrap <admin-writer-key-hex>  (joiners only)          |
-  |                                                                         |
-  |  [2] Sidechannel plane (ephemeral messaging)                             |
-  |      entry: 0000intercom   (name-only, open to all)                     |
-  |      extras: --sidechannels chan1,chan2                                 |
-  |      policy (per channel): welcome / owner-only write / invites         |
-  |      relay: optional peers forward plaintext payloads to others          |
-  |                                                                         |
-  |  [3] MSB plane (transactions / settlement)                               |
-  |      Peer -> MsbClient -> MSB validator network                          |
-  |                                                                         |
-  |  Agent control surface (preferred):                                     |
-  |  SC-Bridge (WebSocket, auth required)                                   |
-  |    JSON: auth, send, join, open, stats, info, ...                       |
-  +------------------------------+------------------------------+-----------+
-                                 |                              |
-                                 | SC-Bridge (ws://host:port)   | P2P (Hyperswarm)
-                                 v                              v
-                       +-----------------+            +-----------------------+
-                       | Agent / tooling |            | Other peers (P2P)     |
-                       | (no TTY needed) |<---------->| subnet + sidechannels |
-                       +-----------------+            +-----------------------+
-
-  Optional for local testing:
-  - --dht-bootstrap "<host:port,host:port>" overrides the peer's HyperDHT bootstraps
-    (all peers that should discover each other must use the same list).
+```
+trac1s0vkcsuul4qtfjyp0q8c9v2ymva3999jpudj95znr7s3d58xp7gq03euke
 ```
 
 ---
-If you plan to build your own app, study the existing contract/protocol and remove example logic as needed (see `SKILL.md`).
+
+## 🚀 Overview
+
+INTERCOM is a web-based wallet intelligence dashboard that allows users to:
+
+- Visualize recent wallet transactions
+- Analyze wallet behavior patterns
+- Detect potential bot activity
+- Generate a simplified risk score
+- View summarized transaction insights
+
+The system fetches the latest 50 transactions and renders them using a D3 force graph.
+
+Currently supports **ERC20 (Ethereum Mainnet)**.
+
+---
+
+## 🧠 AI Wallet Agent
+
+Below the transaction graph, users can access an interactive AI Agent.
+
+The AI Agent supports:
+
+1. Analyze wallet behavior  
+2. Calculate risk score  
+3. Detect bot pattern  
+4. Show transaction summary  
+5. Detect suspicious activity  
+
+Users simply input a number (1–5) to trigger the selected AI analysis mode.
+
+The AI Agent is designed to simulate on-chain behavioral intelligence in a lightweight and extensible way.
+
+---
+
+## 📊 How It Works
+
+1. User inputs a wallet address.
+2. Backend fetches the latest 50 transactions via Etherscan API.
+3. Transactions are mapped into nodes and links.
+4. D3 renders a force-directed transaction graph.
+5. AI Agent analyzes wallet behavior using selectable heuristic modes.
+
+---
+
+## 🌐 Current Support
+
+- ✅ ERC20 (Ethereum Mainnet)
+- ⚠️ SOL (Coming Soon)
+- ⚠️ TRAC Network (Under Development)
+
+Multi-chain support is planned as the next milestone.
+
+---
+
+## 🛠 Tech Stack
+
+- Node.js
+- Express
+- D3.js v7
+- Etherscan API (v2)
+- Modular architecture (feature-based structure)
+
+---
+
+
+## ⚙️ Installation
+
+### 1. Clone repository
+```bash
+git clone https://github.com/MrHaans/wallet-visualizer
+cd wallet-visualizer
+```
+
+### 2. Install dependencies
+```bash
+npm install
+```
+
+### 3. Run Locally
+```bash
+node web-server.js
+```
+
+---
+
+## 🔮 Roadmap
+
+- Multi-chain support (SOL integration)
+- Native TRAC Network transaction parser
+- Advanced AI scoring engine
+- Real-time wallet monitoring
+- Cross-chain behavioral analytics
+
+---
+
+## 👑 CREATED WITH PASSION
+
+**MRHAANS**
+
+---

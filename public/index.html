@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Transaction Visualizer</title>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+
+<style>
+
+body{
+background:linear-gradient(180deg,#0b0f1a,#030611);
+color:white;
+font-family:Arial;
+margin:0;
+padding:0;
+display:flex;
+flex-direction:column;
+align-items:center;
+min-height:100vh;
+}
+
+.header{
+margin-top:20px;
+font-size:26px;
+font-weight:bold;
+color:#00ccff;
+}
+
+.controls{
+margin-top:20px;
+display:flex;
+gap:10px;
+}
+
+input{
+padding:12px;
+width:420px;
+background:#0f1629;
+border:1px solid #00ccff;
+color:white;
+border-radius:6px;
+outline:none;
+}
+
+button{
+padding:12px 20px;
+background:#00ccff;
+border:none;
+color:black;
+font-weight:bold;
+cursor:pointer;
+border-radius:6px;
+}
+
+button:hover{
+background:#00ffaa;
+}
+
+.hint{
+margin-top:10px;
+color:#aaa;
+font-size:13px;
+}
+
+.main-container{
+width:900px;
+display:flex;
+flex-direction:column;
+align-items:center;
+}
+
+.graph-container{
+margin-top:20px;
+width:100%;
+background:#050816;
+border:1px solid #00ccff33;
+border-radius:10px;
+box-shadow:0 0 40px #00ccff22;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+svg{
+display:block;
+}
+
+.ai-panel{
+margin-top:30px;
+width:100%;
+background:#050816;
+border:1px solid #00ccff33;
+border-radius:10px;
+padding:20px;
+box-shadow:0 0 40px #00ccff11;
+}
+
+.ai-title{
+color:#00ccff;
+font-weight:bold;
+margin-bottom:10px;
+}
+
+.ai-options{
+font-size:14px;
+color:#ccc;
+margin-bottom:15px;
+line-height:1.6;
+}
+
+.ai-input{
+width:200px;
+}
+
+#ai-result{
+margin-top:15px;
+background:#0f1629;
+padding:15px;
+border-radius:6px;
+white-space:pre-wrap;
+min-height:80px;
+color:#00ffaa;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">Transaction Visualizer</div>
+
+<div class="controls">
+<input id="address" placeholder="Enter wallet address"/>
+<button id="btn">Analyze</button>
+</div>
+
+<div class="hint">Support ERC20 only for now!</div>
+
+<div class="main-container">
+
+  <div class="graph-container">
+    <svg width="900" height="520"></svg>
+  </div>
+
+  <div class="ai-panel">
+
+    <div class="ai-title">🤖 AI Wallet Agent</div>
+
+    <div class="ai-options">
+    1. Analyze wallet behavior<br>
+    2. Calculate risk score<br>
+    3. Detect bot pattern<br>
+    4. Show transaction summary<br>
+    5. Detect suspicious activity
+    </div>
+
+    <input id="ai-mode" class="ai-input" placeholder="Enter number (1-5)"/>
+    <button id="ai-btn">Run AI</button>
+
+    <pre id="ai-result"></pre>
+
+  </div>
+
+</div>
+
+<script type="module">
+
+import { loadGraph } from "./trac-story.js";
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const analyzeBtn = document.getElementById("btn");
+  const aiBtn = document.getElementById("ai-btn");
+
+  if(analyzeBtn){
+    analyzeBtn.addEventListener("click", () => {
+      loadGraph();
+    });
+  }
+
+  if(aiBtn){
+    aiBtn.addEventListener("click", async () => {
+
+      const address = document.getElementById("address").value;
+      const mode = document.getElementById("ai-mode").value;
+
+      if(!address || !mode){
+        alert("Enter address and mode");
+        return;
+      }
+
+      try{
+        const res = await fetch(`/api/ai-analysis/${address}/${mode}`);
+        const data = await res.json();
+        document.getElementById("ai-result").textContent = data.result || "No result.";
+      }catch(err){
+        document.getElementById("ai-result").textContent = "AI error: " + err.message;
+      }
+
+    });
+  }
+
+});
+
+</script>
+
+</body>
+</html>

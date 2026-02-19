@@ -8,11 +8,15 @@
     "type": "terminal"
   },
   "dependencies": {
+    "axios": "^1.13.5",
     "b4a": "^1.6.7",
     "bare-ws": "2.0.3",
     "compact-encoding": "^2.18.0",
+    "cors": "^2.8.6",
     "crypto": "npm:bare-node-crypto",
+    "express": "^5.2.1",
     "fs": "npm:bare-node-fs",
+    "node-fetch": "^3.3.2",
     "path": "npm:bare-node-path",
     "protomux": "^3.10.1",
     "trac-msb": "git+https://github.com/Trac-Systems/main_settlement_bus.git#5088921",
