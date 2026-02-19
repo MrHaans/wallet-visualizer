@@ -1,5 +1,7 @@
 # INTERCOM – Transaction Visualizer + AI Wallet Agent
 
+![INTERCOM Preview](assets/preview.png)
+
 A lightweight on-chain transaction visualizer with an integrated AI Agent for wallet behavior analysis.
 
 Built for the Trac Network bounty.
