@@ -4,8 +4,6 @@
 
 A lightweight on-chain transaction visualizer with an integrated AI Agent for wallet behavior analysis.
 
-Built for the Trac Network bounty.
-
 ---
 
 ## 📍 TRAC ADDRESS
@@ -111,7 +109,7 @@ node web-server.js
 
 ---
 
-## 👑 CREATED WITH PASSION
+## 👑 Created with Passion By
 
 **MRHAANS**
 
